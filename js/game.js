@@ -6,12 +6,13 @@ function returnAccumulatedScores(data) {
   let dataToAccumulate = [];
 
   do {
+
     let elementToCompare = data.shift();
-    elementToCompare.z = 0;
+    elementToCompare.apperances = 0;
     for (let i = 0; i < data.length; i++) {
       if (elementToCompare.x === data[i].x && elementToCompare.y === data[i].y) {
         elementToCompare.score += data[i].score;
-        elementToCompare.z++;
+        elementToCompare.apperances++;
         data.splice(i, 1);
         i--;
       }
@@ -24,7 +25,7 @@ function returnAccumulatedScores(data) {
   } while (data.length > 0)
 
   const dataToReturn = dataToAccumulate.map(element => {
-    element.evaluate = (element.score / element.z)
+    element.evaluate = (element.score / element.apperances)
     return element;
   });
 
@@ -151,12 +152,19 @@ class Game {
 
   computerMove() {
 
+    const random = Math.random();
+
     if(this.fieldsLeft === 8) {
-      if (this.board.fields[0][0].free){
-        this.makeMove(0,0)
-      }
-      else {
+      if (this.board.fields[1][1].free){
+        this.makeMove(1,1)
+      }else if (random > 0.75){
         this.makeMove(2,2)
+      }else if (random > 0.5) {
+        this.makeMove(2, 0)
+      }else if (random > 0.25) {
+        this.makeMove(0, 2)
+      }else {
+        this.makeMove(0, 0)
       }
     }
     else{
