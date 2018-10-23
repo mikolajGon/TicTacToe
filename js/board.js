@@ -1,5 +1,3 @@
-import {Field} from './fields.js';
-
 class Board{
   constructor(){
     this.rows = 3;
@@ -25,7 +23,7 @@ class Board{
   }
 
   renderFields(boardContainer){
-    const frag = document.createDocumentFragment()
+    const frag = document.createDocumentFragment();
 
     this.fields.forEach(row => {
       row.forEach(field => {
@@ -42,5 +40,3 @@ class Board{
 
   }
 }
-
-export {Board};

@@ -11,31 +11,35 @@
 </head>
 
 <body>
+  <div id="options" class="options">
+    <p id="messsage"></p>
+    <div id="vs_player">
+      <p>
+        Play vs Another Player
+      </p>
+    </div>
+    <div id="vs_computer">
+      <p>
+        Play vs Computer
+      </p>
+    </div>
+  </div>
+  <div id="player1" class="player1">
+    <p id="player1-score">
 
-  <div id="board" class="board">
-    <!-- <div data-field class="field"><div class="cross"></div></div>
-    <div data-field class="field"></div>
-    <div data-field class="field"></div>
-    <div data-field class="field"></div>
-    <div data-field class="field"></div>
-    <div data-field class="field"></div>
-    <div data-field class="field"></div>
-    <div data-field class="field"></div>
-    <div data-field class="field"></div> -->
+    </p>
+  </div>
+  <div id="player2" class="player2">
+    <p id="player2-score">
+
+    </p>
   </div>
 
-<!--
-  <script type="text/javascript" src="js/board.js"></script>
-  <script type="text/javascript" src="js/fields.js"></script>
-  <script type="text/javascript" src="js/game.js"></script>
-  <script type="text/javascript" src="js/players.js"></script> -->
-  <script type="module" src="js/app.js"></script>
-  <!-- <script>
+  <div id="board" class="board">
+  </div>
 
-  const board = document.querySelector('#board');
-
-  board.addEventListener('click', e => console.log(e.target));
-
-  </script> -->
+  <!-- build:js -->
+  <script src="js/app.js"></script>
+  <!-- endbuild -->
 </body>
 </html>

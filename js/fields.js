@@ -8,15 +8,8 @@ class Field {
 
   renderSymbol(fieldContainer) {
     const symbol = document.createElement('div');
-
-    if ( this.owner.symbol === 'cross') {
-      symbol.classList.add('cross');
-    } else {
-      symbol.classList.add('circle');
-    }
-
+    const symbolClass = this.owner.symbol === 'cross' ?  'cross' : 'circle';
+    symbol.classList.add(symbolClass);
     fieldContainer.appendChild(symbol);
   }
 }
-
-export {Field};

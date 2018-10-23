@@ -6,4 +6,3 @@ class Player {
   }
 }
 
-export {Player};

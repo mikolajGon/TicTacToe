@@ -1,6 +1,3 @@
-import {Player} from './players.js';
-import {Board} from './board.js';
-
 function returnAccumulatedScores(data) {
 
   let dataToAccumulate = [];
@@ -22,20 +19,20 @@ function returnAccumulatedScores(data) {
       elementToCompare
     ];
 
-  } while (data.length > 0)
+  } while (data.length > 0);
 
   const dataToReturn = dataToAccumulate.map(element => {
-    element.evaluate = (element.score / element.apperances)
+    element.evaluate = (element.score / element.apperances);
     return element;
   });
 
-  return dataToReturn
+  return dataToReturn;
 }
 
 class Game {
   constructor() {
     this.board = new Board;
-    this.players = this.createPlayers()
+    this.players = this.createPlayers();
     this.ready = false;
     this.fieldsLeft = 9;
   }
@@ -155,19 +152,19 @@ class Game {
     const random = Math.random();
 
     if(this.fieldsLeft === 8) {
-      if (this.board.fields[1][1].free){
-        this.makeMove(1,1)
+      if (!this.board.fields[0][0].free){
+        this.makeMove(2,2);
       }else if (random > 0.75){
-        this.makeMove(2,2)
+        this.makeMove(2,2);
       }else if (random > 0.5) {
-        this.makeMove(2, 0)
+        this.makeMove(2, 0);
       }else if (random > 0.25) {
-        this.makeMove(0, 2)
+        this.makeMove(0, 2);
       }else {
-        this.makeMove(0, 0)
+        this.makeMove(0, 0);
       }
     }
-    else{
+    else {
       let cases = [];
 
       const computer = this.activePlayer;
@@ -180,7 +177,7 @@ class Game {
       avaliableFields.forEach(field => {
         field.owner = computer;
         field.free = false;
-        let step1 = Object.assign({}, { x: field.x, y: field.y })
+        let step1 = Object.assign({}, { x: field.x, y: field.y });
         if (this.checkForWin(computer)) {
           step1.score = 10;
           cases = [...cases, Object.assign({}, step1)];
@@ -241,6 +238,7 @@ class Game {
 
       const evaluatedMoves = returnAccumulatedScores(cases);
       const evaluetedMovesOrdered = evaluatedMoves.sort((a,b) => a.evaluate < b.evaluate ? 1: -1);
+
       const bestMove = evaluetedMovesOrdered.shift();
       this.makeMove(bestMove.x, bestMove.y);
 
@@ -249,5 +247,5 @@ class Game {
 
 }
 
-export {Game};
+
 
