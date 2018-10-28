@@ -2,6 +2,7 @@ const game = new Game(new Board);
 const boardDiv = document.querySelector('#board');
 const vsPlayer = document.querySelector('#vs_player');
 const vsComputer = document.querySelector('#vs_computer');
+const restart = document.querySelector('#restart');
 const options = document.querySelector('#options');
 const message = document.querySelector('#message');
 
@@ -38,9 +39,35 @@ function getPlayerName(player) {
 vsComputer.addEventListener('click', () => {
   clearBoard();
   const player1 = getPlayerName('player1');
-  if ( player1 ) {
-    game.startGame(boardDiv, player1, 'Computer');
+  if (player1) {
+    game.startNewGame(
+      boardDiv,
+      { name: player1, symbol: 'cross', active: true },
+      { name: 'Computer', symbol: 'circle', isComputer: true }
+    );
     addListenersToBoardFields();
-    options.classList.add('invisible');
+    // options.classList.add('invisible');
   }
+});
+
+vsPlayer.addEventListener('click', () => {
+  clearBoard();
+  const player1 = getPlayerName('player1');
+  const player2 = getPlayerName('player2');
+  if (player1 && player2) {
+    game.startNewGame(
+      boardDiv,
+      { name: player1, symbol: 'cross', active: true },
+      { name: player2, symbol: 'circle' }
+    );
+    addListenersToBoardFields();
+    // options.classList.add('invisible');
+  }
+});
+
+restart.addEventListener('click', () => {
+  clearBoard();
+    game.startGame(boardDiv);
+    addListenersToBoardFields();
+    // options.classList.add('invisible');
 });

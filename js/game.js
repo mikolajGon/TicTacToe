@@ -44,8 +44,8 @@ class Game {
 
   createPlayers(player1, player2) {
     this.players = [
-      new Player(player1, 'cross'),
-      new Player(player2, 'circle', false, true)
+      new Player(player1),
+      new Player(player2)
     ];
   }
 
@@ -57,9 +57,13 @@ class Game {
     this.players.forEach(player => player.active = !player.active);
   }
 
-  startGame(boardDiv, player1, player2) {
+  startNewGame(boardDiv, player1, player2) {
+    this.createPlayers(player1, player2);
+    this.startGame(boardDiv);
+  }
+
+  startGame(boardDiv) {
     this.newBoard(new Board);
-    this.createPlayers(player1, player2)
     this.board.renderFields(boardDiv);
     this.ready = true;
   }
@@ -73,6 +77,7 @@ class Game {
     this.fieldsLeft -= 1;
 
     if (this.checkForWin(this.activePlayer)){
+      this.activePlayer.score += 1;
       alert(`${this.activePlayer.name} wins`);
     }else if (this.fieldsLeft === 0) {
       alert('draw!');

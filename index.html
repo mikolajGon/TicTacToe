@@ -11,36 +11,44 @@
 </head>
 
 <body>
-  <div id="options" class="options">
-    <p id="message">
+  <div class="message_container">
+      <p id="message">
 
-    </p>
-    <input type="text" class="name-input" id="player1" placeholder="Please enter 1st player name"/>
-    <input type="text" class="name-input" id="player2" placeholder="Please enter 2nd player name"/>
-    <div id="vs_player">
-      <p id="vs_player_text">
-        Play vs Another Player
+      </p>
+  </div>
+  <div id="game_container">
+    <div id="options" class="options_container">
+      <input type="text" class="name-input" id="player1" placeholder="Please enter 1st player name"/>
+      <input type="text" class="name-input" id="player2" placeholder="Please enter 2nd player name"/>
+      <div id="vs_player">
+        <p id="vs_player_text">
+          Play vs Another Player
+        </p>
+      </div>
+      <div id="vs_computer">
+        <p id="vs_computer_text">
+          Play vs Computer
+        </p>
+      </div>
+      <div id="restart">
+        <p id="restart_text">
+          Restart
+        </p>
+      </div>
+    </div>
+    <div id="player1" class="player1">
+      <p id="player1_score">
+
       </p>
     </div>
-    <div id="vs_computer">
-      <p id="vs_computer_text">
-        Play vs Computer
+    <div id="player2" class="player2">
+      <p id="player2_score">
+
       </p>
     </div>
-  </div>
-  <div id="player1" class="player1">
-    <p id="player1-score">
-
-    </p>
-  </div>
-  <div id="player2" class="player2">
-    <p id="player2-score">
-
-    </p>
-  </div>
-
   <div id="board" class="board">
     <div class="siema"></div>
+  </div>
   </div>
 
   <!-- build:js -->
