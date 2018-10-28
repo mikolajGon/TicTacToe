@@ -1,24 +1,21 @@
 function returnAccumulatedScores(data) {
-
   let dataToAccumulate = [];
-
   do {
-
-    let elementToCompare = data.shift();
-    elementToCompare.apperances = 0;
-    for (let i = 0; i < data.length; i++) {
-      if (elementToCompare.x === data[i].x && elementToCompare.y === data[i].y) {
-        elementToCompare.score += data[i].score;
-        elementToCompare.apperances++;
-        data.splice(i, 1);
-        i--;
-      }
+  let elementToCompare = data.shift();
+  elementToCompare = { ...elementToCompare, apperances: 0 }
+  for (let i = 0; i < data.length; i++) {
+    const { x, y, score } = data[i];
+    if (elementToCompare.x === x && elementToCompare.y === y) {
+    elementToCompare.score += score;
+    elementToCompare.apperances += 1;
+    data.splice(i, 1);
+    i--;
     }
-    dataToAccumulate = [
-      ...dataToAccumulate,
-      elementToCompare
-    ];
-
+  }
+  dataToAccumulate = [
+    ...dataToAccumulate,
+    elementToCompare
+  ];
   } while (data.length > 0);
 
   const dataToReturn = dataToAccumulate.map(element => {
@@ -26,23 +23,15 @@ function returnAccumulatedScores(data) {
     return element;
   });
 
-  return dataToReturn;
+ return dataToReturn;
 }
 
 class Game {
   constructor() {
-    this.board = new Board;
-    this.players = this.createPlayers();
+    this.board = {};
+    this.players = [];
     this.ready = false;
     this.fieldsLeft = 9;
-  }
-
-  createPlayers() {
-    return [
-      new Player('Player 1', 'cross', true),
-      new Player('Player 2', 'circle')
-    ];
-
   }
 
   get activePlayer() {
@@ -53,11 +42,24 @@ class Game {
     return this.players.find(player => !player.active);
   }
 
+  createPlayers(player1, player2) {
+    this.players = [
+      new Player(player1, 'cross'),
+      new Player(player2, 'circle', false, true)
+    ];
+  }
+
+  newBoard(board) {
+    this.board = board;
+  }
+
   switchPlayers() {
     this.players.forEach(player => player.active = !player.active);
   }
 
-  startGame(boardDiv) {
+  startGame(boardDiv, player1, player2) {
+    this.newBoard(new Board);
+    this.createPlayers(player1, player2)
     this.board.renderFields(boardDiv);
     this.ready = true;
   }
@@ -68,7 +70,7 @@ class Game {
     field.free = false;
     field.owner = this.activePlayer;
     field.renderSymbol(element);
-    this.fieldsLeft--;
+    this.fieldsLeft -= 1;
 
     if (this.checkForWin(this.activePlayer)){
       alert(`${this.activePlayer.name} wins`);
@@ -76,7 +78,7 @@ class Game {
       alert('draw!');
     }else{
       this.switchPlayers();
-      if (this.activePlayer.name === 'Player 2') this.computerMove();
+      if (this.activePlayer.isComputer) this.computerMove();
       this.ready = true;
     }
   }
@@ -84,76 +86,93 @@ class Game {
   handleInteraction(e) {
     if (this.ready){
       this.ready = false;
-      const element = e.target;
-      const x = element.dataset.x;
-      const y = element.dataset.y;
+      const { dataset: { x, y } } = e.target;
       const field = this.board.fields[x][y];
       if (!field.free) return;
-      else {
-        this.makeMove(x,y);
-      }
+      this.makeMove(x,y);
     }
   }
 
   checkForWin(player) {
-    if(
-        (
-          this.board.fields[0][0].owner === player&&
-          this.board.fields[0][1].owner === player&&
-          this.board.fields[0][2].owner === player
-        )
-        ||
-        (
-          this.board.fields[1][0].owner === player&&
-          this.board.fields[1][1].owner === player&&
-          this.board.fields[1][2].owner === player
-        )
-        ||
-        (
-          this.board.fields[2][0].owner === player&&
-          this.board.fields[2][1].owner === player&&
-          this.board.fields[2][2].owner === player
-        )
-        ||
-        (
-          this.board.fields[0][0].owner === player&&
-          this.board.fields[1][0].owner === player&&
-          this.board.fields[2][0].owner === player
-        )
-        ||
-        (
-          this.board.fields[0][1].owner === player&&
-          this.board.fields[1][1].owner === player&&
-          this.board.fields[2][1].owner === player
-        )
-        ||
-        (
-          this.board.fields[0][2].owner === player&&
-          this.board.fields[1][2].owner === player&&
-          this.board.fields[2][2].owner === player
-        )
-        ||
-        (
-          this.board.fields[0][0].owner === player&&
-          this.board.fields[1][1].owner === player&&
-          this.board.fields[2][2].owner === player
-        )
-        ||
-        (
-          this.board.fields[0][2].owner === player&&
-          this.board.fields[1][1].owner === player&&
-          this.board.fields[2][0].owner === player
-        )
-      ) return true;
+
+    /***************************************************************************
+     *
+     *  We need to check if board state is equal to the terminal state
+     *  Terminal state is when player owns 3 cells in one column, one row or one diamater
+     *  x represents columns
+     *  y represents row
+     *
+    ***************************************************************************/
+
+    const checkFieldOwner = (x, y, owner) => {
+      return this.board.fields[x][y].owner === owner;
+    };
+
+    if (
+      (
+        checkFieldOwner(0, 0, player) &&
+        checkFieldOwner(0, 1, player) &&
+        checkFieldOwner(0, 2, player)
+      )
+      ||
+      (
+        checkFieldOwner(1, 0, player) &&
+        checkFieldOwner(1, 1, player) &&
+        checkFieldOwner(1, 2, player)
+      )
+      ||
+      (
+        checkFieldOwner(2, 0, player) &&
+        checkFieldOwner(2, 1, player) &&
+        checkFieldOwner(2, 2, player)
+      )
+      ||
+      (
+        checkFieldOwner(0, 0, player) &&
+        checkFieldOwner(1, 0, player) &&
+        checkFieldOwner(2, 0, player)
+      )
+      ||
+      (
+        checkFieldOwner(0, 1, player) &&
+        checkFieldOwner(1, 1, player) &&
+        checkFieldOwner(2, 1, player)
+      )
+      ||
+      (
+        checkFieldOwner(0, 2, player) &&
+        checkFieldOwner(1, 2, player) &&
+        checkFieldOwner(2, 2, player)
+      )
+      ||
+      (
+        checkFieldOwner(0, 0, player) &&
+        checkFieldOwner(1, 1, player) &&
+        checkFieldOwner(2, 2, player)
+      )
+      ||
+      (
+        checkFieldOwner(0, 2, player) &&
+        checkFieldOwner(1, 1, player) &&
+        checkFieldOwner(2, 0, player)
+      )
+    ) return true;
   }
 
   computerMove() {
 
-    const random = Math.random();
+    /***************************************************************************
+     *
+     *  If this is a first move, we don't have to calculate it
+     *  added math.random to randomize first move a bit
+     *
+    ***************************************************************************/
 
-    if(this.fieldsLeft === 8) {
-      if (!this.board.fields[0][0].free){
-        this.makeMove(2,2);
+    if(this.fieldsLeft >= 8) {
+       const random = Math.random();
+
+      if (this.board.fields[1][1].free){
+        this.makeMove(1,1);
       }else if (random > 0.75){
         this.makeMove(2,2);
       }else if (random > 0.5) {
@@ -165,6 +184,20 @@ class Game {
       }
     }
     else {
+
+    /***************************************************************************
+     *
+     *  This is bread and butter of the whole AI
+     *  empty array cases will store all possible scenarios created by loop
+     *  First we filter only empty fields from all fields
+     *  Secondly for each field we check if we would make that move we would won
+     *  If yes -> we evaluate a score positevely
+     *  if not we evaluate this move as zero (tie) and we create another loop
+     *  that makes the same thing but for another reound, since we have already one field taken
+     *  and we repeat above steps, with one difference:
+     *  if there is winning move we evaluate a score negatively -> since it is our opponent turn
+     *
+    ***************************************************************************/
       let cases = [];
 
       const computer = this.activePlayer;
@@ -178,6 +211,7 @@ class Game {
         field.owner = computer;
         field.free = false;
         let step1 = Object.assign({}, { x: field.x, y: field.y });
+
         if (this.checkForWin(computer)) {
           step1.score = 10;
           cases = [...cases, Object.assign({}, step1)];
@@ -188,6 +222,7 @@ class Game {
           avaliableFields.forEach(field => {
             field.owner = human;
             field.free = false;
+
             if (this.checkForWin(human)) {
               avaliableFields.forEach(() => {
                 step1.score = -10;
@@ -200,41 +235,38 @@ class Game {
               avaliableFields.forEach(field => {
                 field.owner = computer;
                 field.free = false;
+
                 if (this.checkForWin(computer)) {
                   step1.score = 9;
                   cases = [...cases, Object.assign({}, step1)];
                 } else {
                   step1.score = 0;
                   cases = [...cases, Object.assign({}, step1)];
-                  const avaliableFields = allFields.filter(field => field.free);
-                  avaliableFields.forEach(field => {
-                    field.owner = human;
-                    field.free = false;
-                    if (this.checkForWin(human)) {
-                      avaliableFields.forEach(() => {
-                        step1.score = -9;
-                        cases = [...cases, Object.assign({}, step1)];
-                      });
-                    } else {
-                      step1.score = 0;
-                      cases = [...cases, Object.assign({}, step1)];
-
-                    }
-                    field.owner = {};
-                    field.free = true;
-                  });
                 }
+
                 field.owner = {};
                 field.free = true;
               });
             }
+
             field.owner = {};
             field.free = true;
           });
         }
+
         field.owner = {};
         field.free = true;
       });
+
+     /***************************************************************************
+     *
+     *  After loop is done we have all possibles scenarios of 3 moves ahead,
+     *  each scenario has its own score and first move (since we are doing only one move atm)
+     *  but what we really need is average evaluation (score divided by instances) of each move
+     *  So we created helper function that loops through scores
+     *  then we sort it and use the one with best score
+     *
+    ***************************************************************************/
 
       const evaluatedMoves = returnAccumulatedScores(cases);
       const evaluetedMovesOrdered = evaluatedMoves.sort((a,b) => a.evaluate < b.evaluate ? 1: -1);
