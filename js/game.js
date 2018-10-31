@@ -28,10 +28,10 @@ function returnAccumulatedScores(data) {
 
 class Game {
   constructor() {
-    this.board = {};
+    this.board = [];
     this.players = [];
     this.ready = false;
-    this.fieldsLeft = 9;
+    this.fieldsLeft = 0;
   }
 
   get activePlayer() {
@@ -65,10 +65,13 @@ class Game {
   startGame(boardDiv) {
     this.newBoard(new Board);
     this.board.renderFields(boardDiv);
+    this.fieldsLeft = 9;
     this.ready = true;
+    this.activePlayer.isComputer && this.computerMove()
   }
 
-  makeMove(x,y){
+  makeMove(x, y) {
+    this.ready = false;
     const element = document.querySelector(`[data-x="${x}"][data-y="${y}"]`);
     const field = this.board.fields[x][y];
     field.free = false;
@@ -79,8 +82,10 @@ class Game {
     if (this.checkForWin(this.activePlayer)){
       this.activePlayer.score += 1;
       alert(`${this.activePlayer.name} wins`);
+      this.switchPlayers();
     }else if (this.fieldsLeft === 0) {
       alert('draw!');
+      this.switchPlayers();
     }else{
       this.switchPlayers();
       if (this.activePlayer.isComputer) this.computerMove();
@@ -90,7 +95,6 @@ class Game {
 
   handleInteraction(e) {
     if (this.ready){
-      this.ready = false;
       const { dataset: { x, y } } = e.target;
       const field = this.board.fields[x][y];
       if (!field.free) return;

@@ -1,4 +1,4 @@
-const game = new Game(new Board);
+const game = new Game();
 const boardDiv = document.querySelector('#board');
 const vsPlayer = document.querySelector('#vs_player');
 const vsComputer = document.querySelector('#vs_computer');
