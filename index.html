@@ -11,44 +11,73 @@
 </head>
 
 <body>
-  <div class="message_container">
+
+<!-- MESSAGES -->
+
+  <div id="message_container" class="message_container invisible">
       <p id="message">
 
       </p>
   </div>
-  <div id="game_container">
-    <div id="options" class="options_container">
-      <input type="text" class="name-input" id="player1" placeholder="Please enter 1st player name"/>
-      <input type="text" class="name-input" id="player2" placeholder="Please enter 2nd player name"/>
-      <div id="vs_player">
-        <p id="vs_player_text">
-          Play vs Another Player
+
+  <div id="game_container" class="game_container">
+
+<!-- BEGINNING AND ENDING SCREEN -->
+
+    <div id="beginning" class="beginning">
+      <div id="start_new">
+        <p id="start_new_text">
+          Start New Game
         </p>
       </div>
-      <div id="vs_computer">
-        <p id="vs_computer_text">
-          Play vs Computer
-        </p>
-      </div>
-      <div id="restart">
+      <div id="restart" class="invisible">
         <p id="restart_text">
           Restart
         </p>
       </div>
     </div>
-    <div id="player1" class="player1">
-      <p id="player1_score">
 
-      </p>
-    </div>
-    <div id="player2" class="player2">
-      <p id="player2_score">
+<!-- OPTIONS -->
 
-      </p>
+    <div id="options" class="options_container invisible">
+      <div class="options_tabs" id="options_tabs">
+        <div id="vs_player">
+          <p id="vs_player_text">
+            Play vs Another Player
+          </p>
+        </div>
+        <div id="vs_computer">
+          <p id="vs_computer_text">
+            Play vs Computer
+          </p>
+        </div>
+      </div>
+      <div id="options_params" class="options_params invisible">
+        <input type="text" class="name-input " id="player1" placeholder="Please enter 1st player name"/>
+        <input type="text" class="name-input " id="player2" placeholder="Please enter 2nd player name"/>
+        <div id="start" class="">
+          <p id="start_text">
+            Start Game
+          </p>
+        </div>
+      </div>
     </div>
-  <div id="board" class="board">
-    <div class="siema"></div>
+
+<!-- BOARD -->
+
+    <div id="board" class="board">
+    </div>
   </div>
+
+<!-- SCORES -->
+
+  <div id="player1" class="player1">
+    <h2 id="player1_name"></h2>
+    <p id="player1_score"></p>
+  </div>
+  <div id="player2" class="player2">
+    <h2 id="player2_name"></h2>
+    <p id="player2_score"></p>
   </div>
 
   <!-- build:js -->

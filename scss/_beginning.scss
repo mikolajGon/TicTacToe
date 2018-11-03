@@ -1,0 +1,12 @@
+.beginning{
+    flex: 1;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+
+    .beginning_buttons{
+        justify-content: center;
+        text-align: center;
+    }
+}

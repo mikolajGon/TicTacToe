@@ -1,37 +1,10 @@
-function returnAccumulatedScores(data) {
-  let dataToAccumulate = [];
-  do {
-  let elementToCompare = data.shift();
-  elementToCompare ={ ...elementToCompare, apperances: 0 };
-  for (let i = 0; i < data.length; i++) {
-    const { x, y, score } = data[i];
-    if (elementToCompare.x === x && elementToCompare.y === y) {
-    elementToCompare.score += score;
-    elementToCompare.apperances += 1;
-    data.splice(i, 1);
-    i--;
-    }
-  }
-  dataToAccumulate = [
-    ...dataToAccumulate,
-    elementToCompare
-  ];
-  } while (data.length > 0);
-
-  const dataToReturn = dataToAccumulate.map(element => {
-    element.evaluate = (element.score / element.apperances);
-    return element;
-  });
-
- return dataToReturn;
-}
-
 class Game {
-  constructor() {
+  constructor(config) {
     this.board = [];
     this.players = [];
     this.ready = false;
     this.fieldsLeft = 0;
+    this.config = config;
   }
 
   get activePlayer() {
@@ -42,11 +15,8 @@ class Game {
     return this.players.find(player => !player.active);
   }
 
-  createPlayers(player1, player2) {
-    this.players = [
-      new Player(player1),
-      new Player(player2)
-    ];
+  createPlayers(getPlayers) {
+    this.players = getPlayers;
   }
 
   newBoard(board) {
@@ -57,14 +27,14 @@ class Game {
     this.players.forEach(player => player.active = !player.active);
   }
 
-  startNewGame(boardDiv, player1, player2) {
-    this.createPlayers(player1, player2);
-    this.startGame(boardDiv);
+  startNewGame() {
+    this.createPlayers(this.config.getPlayers);
+    this.startGame( this.config.boardDiv);
   }
 
-  startGame(boardDiv) {
+  startGame() {
     this.newBoard(new Board);
-    this.board.renderFields(boardDiv);
+    this.board.renderFields(this.config.boardDiv);
     this.fieldsLeft = 9;
     this.ready = true;
     this.activePlayer.isComputer && this.computerMove();
@@ -81,11 +51,15 @@ class Game {
 
     if (this.checkForWin(this.board, this.activePlayer)){
       this.activePlayer.score += 1;
-      alert(`${this.activePlayer.name} wins`);
+      displayMessage(`${this.activePlayer.name} has won!`);
+      config.renderScores();
       this.switchPlayers();
+      beginning.classList.remove('invisible');
     }else if (this.fieldsLeft === 0) {
-      alert('draw!');
+      displayMessage('Draw');
+      config.renderScores();
       this.switchPlayers();
+      beginning.classList.remove('invisible');
     }else{
       this.switchPlayers();
       if (this.activePlayer.isComputer) this.computerMove();
@@ -97,8 +71,7 @@ class Game {
     if (this.ready){
       const { dataset: { x, y } } = e.target;
       const field = this.board.fields[x][y];
-      if (!field.free) return;
-      this.makeMove(x,y);
+      if (field.free) this.makeMove(x, y);
     }
   }
 
@@ -169,26 +142,20 @@ class Game {
   }
 
   computerMove() {
-
     const computer = this.activePlayer;
     const human = this.unactivePlayer;
-    let allFields = [];
-    this.board.fields.forEach(field => allFields = [...allFields, ...field]);
-
 
     const checkNextMove = (depth, player) => {
-      const avaliableFields = allFields.filter(field => field.free);
-
       if (this.checkForWin(this.board, computer)) {
         return 10-depth;
       } else if (this.checkForWin(this.board, human)) {
         return depth-10;
       } else if ((this.fieldsLeft - depth) === 0) {
-        return 0
+        return 0;
       }
 
       let moves = [];
-      for (const field of avaliableFields) {
+      for (const field of this.board.freeFields) {
         field.owner = player;
         field.free = false;
         const value = checkNextMove(depth + 1, (player === human) ? computer : human);
@@ -213,13 +180,10 @@ class Game {
           return movesOrderedByMax.shift().value;
         }
       }
-
-    }
+    };
 
     const bestMove = checkNextMove(0, computer);
-
     this.makeMove(bestMove.x, bestMove.y);
-
   }
 
 }

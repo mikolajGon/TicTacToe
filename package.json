@@ -30,6 +30,7 @@
     "gulp-concat": "^2.6.1",
     "gulp-eslint": "^5.0.0",
     "gulp-html-replace": "^1.6.2",
+    "gulp-remove-html-comments": "^1.0.1",
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.4",

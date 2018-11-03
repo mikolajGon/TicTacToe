@@ -9,15 +9,17 @@ var gulp = require('gulp'),
     gulpBabel = require('gulp-babel'),
     gulpEsLint = require('gulp-eslint'),
     del = require('del'),
-    htmlreplace = require('gulp-html-replace');
+    htmlreplace = require('gulp-html-replace'),
+    removeHTMLComments = require('gulp-remove-html-comments');
 
 gulp.task('concatScripts', function() {
     return gulp.src([
         'js/board.js',
         'js/fields.js',
         'js/game.js',
-        'js/players.js', ,
-        'js/main.js',])
+        'js/players.js',
+        'js/config.js',
+        'js/main.js'])
     .pipe(gulpSourcemaps.init())
     .pipe(gulpConcat('app.js'))
     .pipe(gulpSourcemaps.write('./'))
@@ -59,6 +61,7 @@ gulp.task('replaceScriptName', function() {
     .pipe(htmlreplace({
         'js' : 'js/app-min.js'
     }))
+    .pipe(removeHTMLComments())
     .pipe(gulp.dest('dist'))
 });
 

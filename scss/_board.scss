@@ -1,5 +1,6 @@
 .board{
-  // position: absolute;
+  position: absolute;
+  z-index: -10;
   display: flex;
   margin: auto;
   width: 600px;

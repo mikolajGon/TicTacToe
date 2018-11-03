@@ -1,11 +1,19 @@
-const game = new Game();
-const boardDiv = document.querySelector('#board');
-const vsPlayer = document.querySelector('#vs_player');
-const vsComputer = document.querySelector('#vs_computer');
-const restart = document.querySelector('#restart');
-const options = document.querySelector('#options');
-const message = document.querySelector('#message');
-
+const
+  boardDiv = document.querySelector('#board'),
+  startNewGame = document.querySelector('#start_new'),
+  beginning = document.querySelector('#beginning'),
+  options = document.querySelector('#options'),
+  vsPlayer = document.querySelector('#vs_player'),
+  vsComputer = document.querySelector('#vs_computer'),
+  player1 = document.querySelector('#player1'),
+  player2 = document.querySelector('#player2'),
+  optionsParams = document.querySelector('#options_params')
+  start = document.querySelector('#start'),
+  restart = document.querySelector('#restart'),
+  message = document.querySelector('#message'),
+  messageContainer = document.querySelector('#message_container'),
+  config = new Config(boardDiv),
+  game = new Game(config);
 
 function clearBoard() {
   while (boardDiv.firstChild) {
@@ -23,51 +31,59 @@ function addListenersToBoardFields() {
 }
 
 function getPlayerName(player) {
-  const name = document.querySelector(`#${player}`).value;
-  console.log(name);
+  const name = player.value;
   if (name.length < 2) {
-    message.textContent = `Please enter ${player} name`;
-    return false;
+    displayMessage(`Please enter ${player} name`);
   } else {
-    return name;
+    return { player: player, name: name };
   }
-
 }
 
-//add listener
-
-vsComputer.addEventListener('click', () => {
-  clearBoard();
-  const player1 = getPlayerName('player1');
-  if (player1) {
-    game.startNewGame(
-      boardDiv,
-      { name: player1, symbol: 'cross', active: true },
-      { name: 'Computer', symbol: 'circle', isComputer: true }
-    );
-    addListenersToBoardFields();
-    // options.classList.add('invisible');
-  }
-});
+function displayMessage(messageText) {
+  message.textContent = messageText;
+  messageContainer.classList.remove('invisible');
+  setTimeout(() => {
+    messageContainer.classList.add('invisible');
+  }, 2500);
+}
 
 vsPlayer.addEventListener('click', () => {
+  config.vsComputer = false;
+  vsComputer.classList.remove('active');
+  vsPlayer.classList.toggle('active');
+  optionsParams.classList.remove('invisible');
+  player2.classList.remove('invisible');
+});
+
+vsComputer.addEventListener('click', () => {
+  config.vsComputer = true;
+  vsComputer.classList.toggle('active');
+  vsPlayer.classList.remove('active');
+  optionsParams.classList.remove('invisible');
+  player2.classList.add('invisible');
+});
+
+startNewGame.addEventListener('click', () => {
   clearBoard();
-  const player1 = getPlayerName('player1');
-  const player2 = getPlayerName('player2');
-  if (player1 && player2) {
-    game.startNewGame(
-      boardDiv,
-      { name: player1, symbol: 'cross', active: true },
-      { name: player2, symbol: 'circle' }
-    );
-    addListenersToBoardFields();
-    // options.classList.add('invisible');
-  }
+  config.resetScores();
+  beginning.classList.add('invisible');
+  restart.classList.remove('invisible');
+  options.classList.remove('invisible');
+});
+
+start.addEventListener('click', (e) => {
+  clearBoard();
+  game.startNewGame();
+  addListenersToBoardFields();
+  options.classList.add('invisible');
 });
 
 restart.addEventListener('click', () => {
   clearBoard();
-    game.startGame(boardDiv);
-    addListenersToBoardFields();
-    // options.classList.add('invisible');
+  game.startGame();
+  addListenersToBoardFields();
+  beginning.classList.add('invisible');
 });
+
+
+

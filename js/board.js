@@ -5,6 +5,13 @@ class Board{
     this.fields = this.createFields();
   }
 
+  get freeFields() {
+    let allFields = [];
+    this.fields.forEach(field => allFields = [...allFields, ...field]);
+    const freeFields = allFields.filter(field => field.free);
+    return freeFields;
+  }
+
   createFields() {
     let fields = [];
 
