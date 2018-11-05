@@ -15,8 +15,8 @@ class Game {
     return this.players.find(player => !player.active);
   }
 
-  createPlayers(getPlayers) {
-    this.players = getPlayers;
+  createPlayers() {
+    this.players = this.config.getPlayers;
   }
 
   newBoard(board) {
@@ -28,7 +28,7 @@ class Game {
   }
 
   startNewGame() {
-    this.createPlayers(this.config.getPlayers);
+    this.createPlayers();
     this.startGame( this.config.boardDiv);
   }
 
@@ -37,10 +37,12 @@ class Game {
     this.board.renderFields(this.config.boardDiv);
     this.fieldsLeft = 9;
     this.ready = true;
+    displayMessage(`${this.activePlayer.name} turn`);
     this.activePlayer.isComputer && this.computerMove();
   }
 
   makeMove(x, y) {
+    displayMessage(`${this.unactivePlayer.name} turn`);
     this.ready = false;
     const element = document.querySelector(`[data-x="${x}"][data-y="${y}"]`);
     const field = this.board.fields[x][y];
@@ -185,7 +187,6 @@ class Game {
     const bestMove = checkNextMove(0, computer);
     this.makeMove(bestMove.x, bestMove.y);
   }
-
 }
 
 

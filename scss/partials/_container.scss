@@ -1,0 +1,19 @@
+.main_container {
+    max-width: 1080px;
+    margin: 0 auto;
+    font-family: 'Poor Story', cursive;
+    padding-top: 2*$gutter;
+    color: $white;
+    font-size: $main-font;
+    background-color: $background;
+}
+
+.game_container{
+    position: relative;
+    display: flex;
+    margin: auto;
+    width: 600px;
+    height: 600px;
+    flex-wrap: wrap;
+    background-color: $background-darker;
+}

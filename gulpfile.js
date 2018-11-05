@@ -46,12 +46,12 @@ gulp.task('compileSass', function() {
 });
 
 gulp.task('watchFiles', function() {
-    gulp.watch('scss/*.scss', ['compileSass']);
+    gulp.watch(['scss/*.scss', 'scss/partials/*.scss'], ['compileSass']);
     gulp.watch('js/*.js', ['concatScripts']);
 });
 
 gulp.task('clean', function() {
-    del(['dist', 'css/styles.css*', 'js/app*.js*']);
+    del(['docs', 'css/styles.css*', 'js/app*.js*']);
 });
 
 gulp.task('serve', ['watchFiles']);
@@ -62,12 +62,12 @@ gulp.task('replaceScriptName', function() {
         'js' : 'js/app-min.js'
     }))
     .pipe(removeHTMLComments())
-    .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('docs'))
 });
 
 gulp.task('build', ['uglifyScripts', 'compileSass', 'replaceScriptName'], function() {
     return gulp.src(['css/styles.css', 'js/app-min.js'], {base: './'})
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('docs'));
 });
 
 gulp.task('default', ['clean'], function() {

@@ -5,15 +5,18 @@ const
   options = document.querySelector('#options'),
   vsPlayer = document.querySelector('#vs_player'),
   vsComputer = document.querySelector('#vs_computer'),
-  player1 = document.querySelector('#player1'),
-  player2 = document.querySelector('#player2'),
-  optionsParams = document.querySelector('#options_params')
+  player2 = document.querySelector('#player2_input'),
+  optionsParams = document.querySelector('#options_params'),
   start = document.querySelector('#start'),
   restart = document.querySelector('#restart'),
   message = document.querySelector('#message'),
   messageContainer = document.querySelector('#message_container'),
+  isStarting = document.querySelector('#is_starting'),
+  inputs = document.querySelectorAll('input'),
   config = new Config(boardDiv),
   game = new Game(config);
+
+let readyForStart = true;
 
 function clearBoard() {
   while (boardDiv.firstChild) {
@@ -30,22 +33,35 @@ function addListenersToBoardFields() {
   });
 }
 
-function getPlayerName(player) {
-  const name = player.value;
-  if (name.length < 2) {
+function getPlayerName(input) {
+  const player = input.dataset.player;
+  const name = input.value;
+  console.log(name);
+  if (name.length < 4) {
     displayMessage(`Please enter ${player} name`);
+    readyForStart = false;
   } else {
-    return { player: player, name: name };
+    config.newName({ player: player, name: name });
+    readyForStart = true;
   }
 }
 
 function displayMessage(messageText) {
   message.textContent = messageText;
   messageContainer.classList.remove('invisible');
-  setTimeout(() => {
-    messageContainer.classList.add('invisible');
-  }, 2500);
 }
+
+function changeSymbols(obj) {
+  const symbol = obj.dataset.symbol;
+  config.newSymbol(symbol);
+}
+
+inputs.forEach(input => {
+  input.addEventListener('change', (e) => {
+    input.dataset.player && getPlayerName(e.target);
+    input.dataset.symbol && changeSymbols(e.target);
+  });
+});
 
 vsPlayer.addEventListener('click', () => {
   config.vsComputer = false;
@@ -72,10 +88,14 @@ startNewGame.addEventListener('click', () => {
 });
 
 start.addEventListener('click', (e) => {
-  clearBoard();
-  game.startNewGame();
-  addListenersToBoardFields();
-  options.classList.add('invisible');
+  if (readyForStart){
+    clearBoard();
+    config.changeStartingPlayer(isStarting.checked);
+    game.startNewGame();
+    config.renderScores();
+    addListenersToBoardFields();
+    options.classList.add('invisible');
+  }
 });
 
 restart.addEventListener('click', () => {

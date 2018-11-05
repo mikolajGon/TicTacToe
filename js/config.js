@@ -5,6 +5,11 @@ class Config{
         this.boardDiv = boardDiv;
     }
 
+    get getPlayers() {
+        const players = this.players;
+        return this.vsComputer ? [players[0], players[2]] : [players[0], players[1]];
+    }
+
     createNewPlayers() {
         return [
             new Player({ name: 'Player 1', symbol: 'cross', active: true }),
@@ -13,22 +18,23 @@ class Config{
         ];
     }
 
-    set newSymbol(symbol) {
+    newSymbol(symbol) {
         if (symbol === this.players[0].symbol) return;
         else{
             this.players.forEach(player => {
-                player.symbol = (symbol === 'circle') ? 'cross' : 'circle';
+                player.symbol = (player.symbol === 'circle') ? 'cross' : 'circle';
             });
         }
     }
 
-    set newName({player, name}) {
-        player === 'player1' ? player[0].name = name : player[1] = name;
+    changeStartingPlayer(isStarting) {
+        this.players[0].active = isStarting;
+        this.players[1].active = !isStarting;
+        this.players[2].active = !isStarting;
     }
 
-    get getPlayers() {
-        const players = this.players;
-        return vsComputer ? [players[0], players[2]] : [players[0], players[1]];
+    newName({player, name}) {
+        player === 'Player 1' ? this.players[0].name = name : this.players[1].name = name;
     }
 
     renderScores() {
