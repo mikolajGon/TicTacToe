@@ -1,0 +1,114 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Cross and circle game</title>
+  <link href="https://fonts.googleapis.com/css?family=Poor+Story" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+
+</head>
+
+<body>
+<div class="main_container">
+
+  <div id="game_container" class="game_container">
+
+  <!-- BEGINNING AND ENDING SCREEN -->
+
+    <div id="beginning" class="beginning">
+      <h1 id="start_new" class="beginning_buttons">
+        Start New Game
+      </p>
+      <h1 id="restart" class="invisible beginning_buttons">
+        Restart
+      </p>
+    </div>
+
+  <!-- OPTIONS -->
+
+    <div id="options" class="options_container invisible">
+      <div id="options_tabs"class="options_tabs">
+        <div id="vs_player" class="vs_tab">
+          <h3 id="vs_player_text" class="vs_text">
+            Play vs Player
+          </p>
+        </div>
+        <div id="vs_computer" class="vs_tab">
+          <h3 id="vs_computer_text" class="vs_text">
+            Play vs Computer
+          </p>
+        </div>
+      </div>
+      <div id="options_params" class="options_params invisible">
+        <div class="params_container">
+          <fieldset class="player_fieldset">
+
+            <label for="player1" class="name_label"> Player 1:
+              <input type="text" class="name-input " data-player="Player 1" placeholder="Please enter 1st player name"/>
+            </label>
+
+            <label class="params_input_container">starting
+              <input type="checkbox" name="start" id="is_starting" class="params_input" checked="checked">
+              <span class="checkmark"></span>
+            </label>
+
+            <label for="cross" class="params_input_container">cross
+              <input type="radio" id="cross" name="symbol" data-symbol="cross" value="cross" class="params_input" checked="checked">
+              <span class="checkmark"></span>
+            </label>
+
+            <label for="circle" class="params_input_container">circle
+              <input type="radio" id="circle" name="symbol" data-symbol="circle" value="circle" class="params_input">
+              <span class="checkmark"></span>
+            </label>
+
+          </fieldset>
+
+          <label for="player2" class="name_label" id="player2_input"> Player 2:
+          <input type="text" class="name-input " data-player="Player 2" placeholder="Please enter 2nd player name"/>
+          </label>
+        </div>
+
+        <div class="start_button">
+          <h1 id="start">
+            Start Game
+          </p>
+        </div>
+      </div>
+    </div>
+
+  <!-- BOARD -->
+
+    <div id="board" class="board">
+    </div>
+  </div>
+
+  <!-- SCORES -->
+
+  <div class="scores" id="scores">
+    <div id="player1_score_container" class="score player1">
+      <h2 id="player1_name"></h2>
+      <p id="player1_score"></p>
+    </div>
+    <!-- MESSAGES -->
+
+    <div id="message_container" class="message_container invisible">
+      <h1 id="message">
+
+      </h1>
+    </div>
+
+    <!-- MESSAGES END-->
+    <div id="player2_score_container" class="score player2">
+      <h2 id="player2_name"></h2>
+      <p id="player2_score"></p>
+    </div>
+  </div>
+</div>
+  <!-- build:js -->
+  <script src="js/app.js"></script>
+  <!-- endbuild -->
+</body>
+</html>

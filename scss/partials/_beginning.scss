@@ -1,0 +1,39 @@
+.beginning{
+    position: absolute;
+    z-index: 10;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    background-color: $windows-background;
+    color: $background-darker;
+    font-weight: bold;
+    transition: .5s;
+
+}
+
+.beginning_buttons{
+    margin: 0;
+    width: 100%;
+    transition: 0.5s;
+    flex: 1 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+
+        &:nth-child(even){
+            transform:
+                scale(1.2)
+                rotate(1deg);
+        }
+
+        &:nth-child(odd){
+            transform:
+                scale(1.2)
+                rotate(-1deg);
+        }
+    }
+}

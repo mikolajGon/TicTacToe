@@ -1,0 +1,289 @@
+* {
+  box-sizing: border-box; }
+
+body {
+  background: #0088ff; }
+
+html, body, ul, ol, li, form, fieldset, legend {
+  margin: 0;
+  padding: 0; }
+
+h1, h2, h3, h4, h5, h6, p {
+  margin: 0; }
+
+fieldset, img {
+  border: 0; }
+
+li {
+  list-style: none; }
+
+a {
+  color: inherit;
+  text-decoration: inherit; }
+
+.main_container {
+  max-width: 1080px;
+  margin: 0 auto;
+  font-family: 'Poor Story', cursive;
+  padding-top: 48px;
+  color: white;
+  font-size: 30px;
+  background-color: #0088ff; }
+
+.game_container {
+  position: relative;
+  display: flex;
+  margin: auto;
+  width: 600px;
+  height: 600px;
+  flex-wrap: wrap;
+  background-color: rgba(0, 59, 110, 0.9); }
+
+.beginning {
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  background-color: rgba(0, 136, 255, 0.8);
+  color: rgba(0, 59, 110, 0.9);
+  font-weight: bold;
+  transition: .5s; }
+
+.beginning_buttons {
+  margin: 0;
+  width: 100%;
+  transition: 0.5s;
+  flex: 1 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  .beginning_buttons:hover:nth-child(even) {
+    transform: scale(1.2) rotate(1deg); }
+  .beginning_buttons:hover:nth-child(odd) {
+    transform: scale(1.2) rotate(-1deg); }
+
+.options_container {
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 100%;
+  padding: 24px; }
+
+.options_tabs {
+  flex: 1;
+  display: flex;
+  flex-direction: row; }
+
+.vs_tab {
+  flex: 1;
+  display: flex; }
+  .vs_tab h3 {
+    margin: 0;
+    width: 100%;
+    transition: transform 0.5s;
+    flex: 1 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+    .vs_tab h3:hover {
+      transform: scale(1.1); }
+
+.options_params {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  flex: 7;
+  background-color: rgba(0, 136, 255, 0.8);
+  color: rgba(0, 59, 110, 0.9);
+  transition: 1s; }
+
+.name-input {
+  outline: 0;
+  border-bottom: 1px solid rgba(0, 59, 110, 0.9);
+  padding: 24px 0 24px 24px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  color: white;
+  font-family: 'Poor Story', cursive;
+  font-size: 24px; }
+  .name-input::placeholder {
+    color: rgba(0, 59, 110, 0.9); }
+
+.name_label {
+  font-weight: bold; }
+
+.params_container {
+  flex: 6;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly; }
+
+.params_input_container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+  .params_input_container:hover .params_input ~ .checkmark {
+    background-color: white; }
+
+.params_input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+  padding: 24px 0; }
+  .params_input:checked ~ .checkmark {
+    background-color: rgba(0, 59, 110, 0.9); }
+  .params_input:checked ~ .checkmark:after {
+    display: block; }
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #0088ff; }
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid #0088ff;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg); }
+
+.start_button {
+  font-weight: bold;
+  text-align: center;
+  padding: 24px; }
+  .start_button h1 {
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.5s; }
+    .start_button h1:hover {
+      transform: scale(1.2) rotate(2deg); }
+
+.active {
+  background-color: rgba(0, 136, 255, 0.8);
+  color: rgba(0, 59, 110, 0.9);
+  font-weight: bold; }
+
+.scores {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 24px; }
+  .scores .score {
+    display: inline-block; }
+
+.board {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  margin: auto;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  background-color: transparent; }
+  .board .field {
+    position: relative;
+    flex: 1 1 30%;
+    width: 200px;
+    height: 200px;
+    border-color: #0088ff;
+    border-style: solid; }
+    .board .field:first-child {
+      border-width: 0 3px 3px 0; }
+    .board .field:nth-child(2) {
+      border-width: 0 3px 3px; }
+    .board .field:nth-child(3) {
+      border-width: 0 0 3px 3px; }
+    .board .field:nth-child(4) {
+      border-width: 3px 3px 3px 0; }
+    .board .field:nth-child(5) {
+      border-width: 3px; }
+    .board .field:nth-child(6) {
+      border-width: 3px 0 3px 3px; }
+    .board .field:nth-child(7) {
+      border-width: 3px 3px 0 0; }
+    .board .field:nth-child(8) {
+      border-width: 3px 3px 0 3px; }
+    .board .field:last-child {
+      border-width: 3px 0 0 3px; }
+    .board .field:after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transition: 3s; }
+    .board .field:hover:after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: .6;
+      background-color: rgba(0, 136, 255, 0.8); }
+  .board .cross {
+    position: absolute;
+    top: 25px;
+    left: 50%;
+    width: 10px;
+    height: 150px;
+    border-radius: 5px;
+    background-color: #0088ff;
+    transform: rotate(45deg); }
+  .board .cross::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 150px;
+    border-radius: 5px;
+    background-color: #0088ff;
+    transform: rotate(-90deg); }
+  .board .circle {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #0088ff; }
+  .board .circle::after {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background-color: rgba(0, 59, 110, 0.9); }
+
+.invisible {
+  z-index: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: .5s; }
+
+/*# sourceMappingURL=styles.css.map */
