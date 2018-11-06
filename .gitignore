@@ -1,6 +1,6 @@
 node_modules/
 .vscode/
-css/
+/css/
 js/app-min.js
 js/app.js
 js/app.js.map
